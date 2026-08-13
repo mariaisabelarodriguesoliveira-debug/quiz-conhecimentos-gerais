@@ -1,0 +1,129 @@
+const questions = [
+    {
+        question: "Qual é a capital do Brasil?",
+        answers: [
+            "São Paulo",
+            "Brasília",
+            "Rio de Janeiro",
+            "Salvador"
+        ],
+        correct: "Brasília"
+    },
+
+    {
+        question: "Quantos continentes existem?",
+        answers: [
+            "5",
+            "6",
+            "7",
+            "8"
+        ],
+        correct: "7"
+    },
+
+    {
+        question: "Qual planeta é conhecido como Planeta Vermelho?",
+        answers: [
+            "Vênus",
+            "Marte",
+            "Júpiter",
+            "Saturno"
+        ],
+        correct: "Marte"
+    },
+
+    {
+        question: "Qual é o maior oceano do planeta?",
+        answers: [
+            "Oceano Atlântico",
+            "Oceano Índico",
+            "Oceano Pacífico",
+            "Oceano Ártico"
+        ],
+        correct: "Oceano Pacífico"
+    },
+
+    {
+        question: "Qual é o resultado de 5 + 5?",
+        answers: [
+            "8",
+            "9",
+            "10",
+            "12"
+        ],
+        correct: "10"
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionElement = document.getElementById("question");
+const questionNumberElement = document.getElementById("question-number");
+const answersElement = document.getElementById("answers");
+const nextButton = document.getElementById("next-button");
+const scoreElement = document.getElementById("score");
+
+function showQuestion() {
+
+    const question = questions[currentQuestion];
+
+    questionElement.textContent = question.question;
+
+    questionNumberElement.textContent =
+        `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+
+    answersElement.innerHTML = "";
+
+    question.answers.forEach(answer => {
+
+        const button = document.createElement("button");
+
+        button.textContent = answer;
+        button.classList.add("answer");
+
+        button.addEventListener("click", () => {
+
+            if (answer === question.correct) {
+                score++;
+                button.style.backgroundColor = "#a7f3d0";
+            } else {
+                button.style.backgroundColor = "#fecaca";
+            }
+
+            const allButtons =
+                document.querySelectorAll(".answer");
+
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+            });
+        });
+
+        answersElement.appendChild(button);
+    });
+}
+
+nextButton.addEventListener("click", () => {
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+
+        showQuestion();
+
+    } else {
+
+        questionElement.textContent = "Quiz finalizado! 🎉";
+
+        questionNumberElement.textContent = "";
+
+        answersElement.innerHTML = "";
+
+        nextButton.style.display = "none";
+
+        scoreElement.textContent =
+            `Você acertou ${score} de ${questions.length} perguntas!`;
+    }
+});
+
+showQuestion();
